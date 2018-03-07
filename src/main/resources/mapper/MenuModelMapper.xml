@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiao.demo.dao.MenuModelMapper">
+  <resultMap id="BaseResultMap" type="com.xiao.demo.model.MenuModel">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="menu_path" jdbcType="VARCHAR" property="menuPath" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
+    <result column="menu_auth" jdbcType="BIT" property="menuAuth" />
+    <result column="menu_enabled" jdbcType="BIT" property="menuEnabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menu_path, menu_name, menu_type, menu_auth, menu_enabled
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tab_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xiao.demo.model.MenuModel">
+    insert into tab_menu (id, menu_path, menu_name, 
+      menu_type, menu_auth, menu_enabled
+      )
+    values (#{id,jdbcType=INTEGER}, #{menuPath,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuType,jdbcType=VARCHAR}, #{menuAuth,jdbcType=BIT}, #{menuEnabled,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xiao.demo.model.MenuModel">
+    insert into tab_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="menuPath != null">
+        menu_path,
+      </if>
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="menuType != null">
+        menu_type,
+      </if>
+      <if test="menuAuth != null">
+        menu_auth,
+      </if>
+      <if test="menuEnabled != null">
+        menu_enabled,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="menuPath != null">
+        #{menuPath,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="menuAuth != null">
+        #{menuAuth,jdbcType=BIT},
+      </if>
+      <if test="menuEnabled != null">
+        #{menuEnabled,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xiao.demo.model.MenuModel">
+    update tab_menu
+    <set>
+      <if test="menuPath != null">
+        menu_path = #{menuPath,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        menu_type = #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="menuAuth != null">
+        menu_auth = #{menuAuth,jdbcType=BIT},
+      </if>
+      <if test="menuEnabled != null">
+        menu_enabled = #{menuEnabled,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xiao.demo.model.MenuModel">
+    update tab_menu
+    set menu_path = #{menuPath,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_type = #{menuType,jdbcType=VARCHAR},
+      menu_auth = #{menuAuth,jdbcType=BIT},
+      menu_enabled = #{menuEnabled,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
