@@ -1,25 +1,15 @@
-package com.xiao.demo.dao;
+package com.xiao.demo.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.model.UserModel;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
-
-@Repository
-public interface UserModelMapper {
-
+public interface UserService {
     /**
      * 获取全部用户信息
      * @return
      */
-    List<UserModel> selectUserByPage(Map<String,Object> map);
+    JSONObject selectAllUser(String currentPage, String pageSize);
 
-    /**
-     * 获取用户数
-     * @return
-     */
-    Integer selectUserCount();
     /**
      *
      * @mbg.generated 2018-03-07

@@ -3,7 +3,7 @@
     <include resource="org/springframework/boot/logging/logback/base.xml" />
     <logger name="org.springframework.web" level="INFO" />
     <!-- 打印SQL语句 -->
-    <logger name="com.example.demo.dao" level="debug"  />
+    <logger name="com.xiao.demo.dao" level="debug"  />
 
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

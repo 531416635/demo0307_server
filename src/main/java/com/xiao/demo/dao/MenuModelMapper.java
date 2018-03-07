@@ -1,7 +1,9 @@
 package com.xiao.demo.dao;
 
 import com.xiao.demo.model.MenuModel;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface MenuModelMapper {
     /**
      *

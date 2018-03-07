@@ -3,6 +3,7 @@ package com.xiao.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.config.Constant;
 import com.xiao.demo.model.UserModel;
+import com.xiao.demo.service.UserService;
 import com.xiao.demo.utils.AESUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,35 @@ public class UserController {
 
     @Autowired
     private Constant constant;
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 获取用户列表
+     * @return
+     */
+    @RequestMapping(value = "/getAllUser.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject getAllUser(@RequestBody(required = false) Map<String,Object> map){
+        String currentPage = null;
+        String pageSize = null;
+        if(null!=map){
+            currentPage = map.get("currentPage")+"";
+            pageSize = map.get("pageSize")+"";
+        }
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",userService.selectAllUser(currentPage,pageSize));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","获取用户信息异常");
+        }
+        return json;
+    }
+
 
     /**
      * 登录校验
