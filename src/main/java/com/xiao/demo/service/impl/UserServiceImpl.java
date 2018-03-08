@@ -22,21 +22,22 @@ public class UserServiceImpl implements UserService {
     UserModelMapper userDao;
 
     @Override
-    public JSONObject selectAllUser(String currentPage,String pageSize) {
+    public JSONObject selectAllUser(Map<String,Object> map) {
+        //分页数据处理
+        String currentPage = null;
+        String pageSize = null;
+        if(null!=map){
+            currentPage = map.get("currentPage")+"";
+            pageSize = map.get("pageSize")+"";
+        }
         int totalCount = userDao.selectUserCount();
-        if(StringUtils.isEmpty(currentPage) || "null".equals(currentPage)){
-            currentPage = "1";
-        }
-        if(StringUtils.isEmpty(pageSize) || "null".equals(pageSize)){
-            pageSize = "10";
-        }
-        PageModel page = new PageModel(Integer.valueOf(currentPage),totalCount,Integer.valueOf(pageSize));
-        logger.info("{}", JSONObject.toJSONString(page));
-        Map<String,Object> map = new HashMap<>();
-        map.put("page",page);
+        PageModel page = new PageModel(currentPage,totalCount,pageSize);
+
+        Map<String,Object> mapParam = new HashMap<>();
+        mapParam.put("page",page);
         JSONObject json = new JSONObject();
         json.put("page",page);
-        json.put("userList",userDao.selectUserByPage(map));
+        json.put("userList",userDao.selectUserByPage(mapParam));
         return json;
     }
 

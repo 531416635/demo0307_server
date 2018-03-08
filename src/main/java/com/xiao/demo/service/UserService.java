@@ -3,12 +3,14 @@ package com.xiao.demo.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.model.UserModel;
 
+import java.util.Map;
+
 public interface UserService {
     /**
      * 获取全部用户信息
      * @return
      */
-    JSONObject selectAllUser(String currentPage, String pageSize);
+    JSONObject selectAllUser(Map<String,Object> map);
 
     /**
      *

@@ -42,17 +42,11 @@ public class UserController {
      */
     @RequestMapping(value = "/getAllUser.do",produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject getAllUser(@RequestBody(required = false) Map<String,Object> map){
-        String currentPage = null;
-        String pageSize = null;
-        if(null!=map){
-            currentPage = map.get("currentPage")+"";
-            pageSize = map.get("pageSize")+"";
-        }
         JSONObject json = new JSONObject();
         json.put("code","-1");
         try{
             json.put("code","1");
-            json.put("result",userService.selectAllUser(currentPage,pageSize));
+            json.put("result",userService.selectAllUser(map));
         }catch (Exception e){
             e.printStackTrace();
             json.put("code","-2");

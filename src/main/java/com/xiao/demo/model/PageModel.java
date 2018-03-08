@@ -1,5 +1,7 @@
 package com.xiao.demo.model;
 
+import org.springframework.util.StringUtils;
+
 public class PageModel {
 
     private int pageSize;// 每页显示的记录条数
@@ -12,7 +14,15 @@ public class PageModel {
 
     // 所有参数都进行修改
 
-    public PageModel(int currentPageNum, int totalCount, int pageSize) {
+    public PageModel(String currentPage, int totalCount, String pageSizeParam) {
+        int currentPageNum = 1;//默认第一页
+        int pageSize = 10;//默认每页显示10条数据
+        if(!StringUtils.isEmpty(currentPage) && !"null".equals(currentPage)){
+            currentPageNum = Integer.valueOf(currentPage);
+        }
+        if(!StringUtils.isEmpty(pageSizeParam) && !"null".equals(pageSizeParam)){
+            pageSize = Integer.valueOf(pageSizeParam);
+        }
         this.totalCount = totalCount;
         this.pageSize = pageSize;
         this.totalPageNum = totalCount % pageSize == 0 ? totalCount
