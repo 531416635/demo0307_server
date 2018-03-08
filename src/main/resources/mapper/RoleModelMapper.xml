@@ -15,6 +15,19 @@
     from tab_role
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectRoleCount" resultType="java.lang.Integer">
+    select
+    count(1)
+    from tab_role
+  </select>
+  <select id="selectRoleByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tab_role
+    <if  test="page.startPage != null and page.endPage != null" >
+      limit ${page.startPage},${page.endPage}
+    </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_role
     where id = #{id,jdbcType=INTEGER}

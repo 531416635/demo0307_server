@@ -9,6 +9,8 @@ package com.xiao.demo.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ public class SessionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
             throws IOException, ServletException {
+//        HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
+//        HttpSession session = request.getSession();
         HttpServletRequest req = (HttpServletRequest) arg0;
         HttpSession session=req.getSession();
         String uri=req.getRequestURI()+"?" + req.getQueryString();

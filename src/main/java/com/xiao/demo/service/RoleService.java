@@ -1,26 +1,17 @@
-package com.xiao.demo.dao;
+package com.xiao.demo.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.model.RoleModel;
-import com.xiao.demo.model.UserModel;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
-@Repository
-public interface RoleModelMapper {
+public interface RoleService {
 
     /**
      * 获取全部角色信息
      * @return
      */
-    List<UserModel> selectRoleByPage(Map<String,Object> map);
-
-    /**
-     * 获取角色数
-     * @return
-     */
-    Integer selectRoleCount();
+    JSONObject selectAllRole(Map<String,Object> map);
     /**
      *
      * @mbg.generated 2018-03-07

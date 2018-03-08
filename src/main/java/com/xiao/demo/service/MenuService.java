@@ -1,26 +1,16 @@
-package com.xiao.demo.dao;
+package com.xiao.demo.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.model.MenuModel;
-import com.xiao.demo.model.UserModel;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
-@Repository
-public interface MenuModelMapper {
-
+public interface MenuService {
     /**
      * 获取全部菜单信息
      * @return
      */
-    List<UserModel> selectMenuByPage(Map<String,Object> map);
-
-    /**
-     * 获取菜单数
-     * @return
-     */
-    Integer selectMenuCount();
+    JSONObject selectAllMenus(Map<String,Object> map);
     /**
      *
      * @mbg.generated 2018-03-07
