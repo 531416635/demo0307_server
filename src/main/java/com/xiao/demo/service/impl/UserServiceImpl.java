@@ -47,12 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(UserModel record) {
-        return 0;
+        return userDao.insert(record);
     }
 
     @Override
     public int insertSelective(UserModel record) {
-        return 0;
+        return userDao.insertSelective(record);
     }
 
     @Override
