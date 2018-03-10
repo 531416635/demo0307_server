@@ -24,6 +24,7 @@ CREATE TABLE `tab_menu` (
   `menu_path` varchar(100) DEFAULT NULL COMMENT '访问路径',
   `menu_name` varchar(50) DEFAULT NULL COMMENT '菜单名称',
   `menu_type` varchar(10) DEFAULT NULL COMMENT '菜单类型',
+  `menu_parent` int(11) DEFAULT NULL COMMENT '父菜单',
   `menu_auth` tinyint(1) DEFAULT NULL COMMENT '是否需要权限',
   `menu_enabled` tinyint(1) DEFAULT NULL COMMENT '菜单是否可用',
   PRIMARY KEY (`id`)

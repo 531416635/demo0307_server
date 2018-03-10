@@ -6,42 +6,49 @@
     <result column="menu_path" jdbcType="VARCHAR" property="menuPath" />
     <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
     <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
+    <result column="menu_parent" jdbcType="INTEGER" property="menuParent" />
     <result column="menu_auth" jdbcType="BIT" property="menuAuth" />
     <result column="menu_enabled" jdbcType="BIT" property="menuEnabled" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, menu_path, menu_name, menu_type, menu_auth, menu_enabled
+    id, menu_path, menu_name, menu_type, menu_parent, menu_auth, menu_enabled
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tab_menu
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectMenuCount" resultType="java.lang.Integer">
-    select
-    count(1)
-    from tab_menu
-  </select>
-  <select id="selectMenuByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+
+  <select id="getMenuChildren" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tab_menu
-    <if  test="page.startPage != null and page.endPage != null" >
-      limit ${page.startPage},${page.endPage}
-    </if>
   </select>
+    <select id="selectMenuCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from tab_menu
+    </select>
+    <select id="selectMenuByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tab_menu
+        <if  test="page.startPage != null and page.endPage != null" >
+            limit ${page.startPage},${page.endPage}
+        </if>
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_menu
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.xiao.demo.model.MenuModel">
     insert into tab_menu (id, menu_path, menu_name, 
-      menu_type, menu_auth, menu_enabled
-      )
+      menu_type, menu_parent, menu_auth, 
+      menu_enabled)
     values (#{id,jdbcType=INTEGER}, #{menuPath,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
-      #{menuType,jdbcType=VARCHAR}, #{menuAuth,jdbcType=BIT}, #{menuEnabled,jdbcType=BIT}
-      )
+      #{menuType,jdbcType=VARCHAR}, #{menuParent,jdbcType=INTEGER}, #{menuAuth,jdbcType=BIT}, 
+      #{menuEnabled,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.xiao.demo.model.MenuModel">
     insert into tab_menu
@@ -57,6 +64,9 @@
       </if>
       <if test="menuType != null">
         menu_type,
+      </if>
+      <if test="menuParent != null">
+        menu_parent,
       </if>
       <if test="menuAuth != null">
         menu_auth,
@@ -78,6 +88,9 @@
       <if test="menuType != null">
         #{menuType,jdbcType=VARCHAR},
       </if>
+      <if test="menuParent != null">
+        #{menuParent,jdbcType=INTEGER},
+      </if>
       <if test="menuAuth != null">
         #{menuAuth,jdbcType=BIT},
       </if>
@@ -98,6 +111,9 @@
       <if test="menuType != null">
         menu_type = #{menuType,jdbcType=VARCHAR},
       </if>
+      <if test="menuParent != null">
+        menu_parent = #{menuParent,jdbcType=INTEGER},
+      </if>
       <if test="menuAuth != null">
         menu_auth = #{menuAuth,jdbcType=BIT},
       </if>
@@ -112,6 +128,7 @@
     set menu_path = #{menuPath,jdbcType=VARCHAR},
       menu_name = #{menuName,jdbcType=VARCHAR},
       menu_type = #{menuType,jdbcType=VARCHAR},
+      menu_parent = #{menuParent,jdbcType=INTEGER},
       menu_auth = #{menuAuth,jdbcType=BIT},
       menu_enabled = #{menuEnabled,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}

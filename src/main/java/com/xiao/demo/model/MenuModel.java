@@ -1,5 +1,7 @@
 package com.xiao.demo.model;
 
+import java.util.List;
+
 public class MenuModel {
     /**
      * 
@@ -22,6 +24,11 @@ public class MenuModel {
     private String menuType;
 
     /**
+     * 父菜单
+     */
+    private Integer menuParent;
+
+    /**
      * 是否需要权限
      */
     private Boolean menuAuth;
@@ -30,6 +37,37 @@ public class MenuModel {
      * 菜单是否可用
      */
     private Boolean menuEnabled;
+
+    //tree 节点标签
+    private String label;
+    //tree 子树为节点
+    private List<MenuModel> children;
+    // Cascader 级联选择器--标签
+    private String value;
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public List<MenuModel> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenuModel> children) {
+        this.children = children;
+    }
 
     /**
      * 
@@ -44,6 +82,7 @@ public class MenuModel {
      * @param id 
      */
     public void setId(Integer id) {
+        setValue(id+"");
         this.id = id;
     }
 
@@ -76,6 +115,7 @@ public class MenuModel {
      * @param menuName 菜单名称
      */
     public void setMenuName(String menuName) {
+        setLabel(menuName);
         this.menuName = menuName == null ? null : menuName.trim();
     }
 
@@ -93,6 +133,22 @@ public class MenuModel {
      */
     public void setMenuType(String menuType) {
         this.menuType = menuType == null ? null : menuType.trim();
+    }
+
+    /**
+     * 父菜单
+     * @return menu_parent 父菜单
+     */
+    public Integer getMenuParent() {
+        return menuParent;
+    }
+
+    /**
+     * 父菜单
+     * @param menuParent 父菜单
+     */
+    public void setMenuParent(Integer menuParent) {
+        this.menuParent = menuParent;
     }
 
     /**

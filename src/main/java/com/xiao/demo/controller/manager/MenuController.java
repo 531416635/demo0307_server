@@ -48,4 +48,24 @@ public class MenuController {
         return json;
     }
 
+    /**
+     * 获取父子菜单列表
+     * @return
+     */
+    @RequestMapping(value = "/getMenuChildren.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject getMenuChildren(@RequestBody(required = false) Map<String,Object> map){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",menuService.getMenuChildren(map));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","获取父子菜单列表异常");
+        }
+        return json;
+    }
+
+
 }

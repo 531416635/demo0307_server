@@ -5,7 +5,7 @@
 <generatorConfiguration>
 	<!-- 数据库驱动 -->
 	<classPathEntry
-		location="D:\program files\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />
+		location="D:\program\repository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar" />
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 		<!-- 注释 -->
 		<commentGenerator type="com.xiao.demo.generator.MyCommentGenerator">
@@ -42,25 +42,25 @@
 		</javaClientGenerator>
 		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
 
-		<table tableName="tab_user" domainObjectName="UserModel"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
+		<!--<table tableName="tab_user" domainObjectName="UserModel"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false"></table>-->
 
-		<table tableName="tab_user_role" domainObjectName="UserRoleModel"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false"></table>
+		<!--<table tableName="tab_user_role" domainObjectName="UserRoleModel"-->
+			<!--enableCountByExample="false" enableUpdateByExample="false"-->
+			<!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			<!--selectByExampleQueryId="false"></table>-->
 
-		<table tableName="tab_role" domainObjectName="RoleModel"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false"></table>
+		<!--<table tableName="tab_role" domainObjectName="RoleModel"-->
+			   <!--enableCountByExample="false" enableUpdateByExample="false"-->
+			   <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			   <!--selectByExampleQueryId="false"></table>-->
 
-		<table tableName="tab_role_menu" domainObjectName="RoleMenuModel"
-			   enableCountByExample="false" enableUpdateByExample="false"
-			   enableDeleteByExample="false" enableSelectByExample="false"
-			   selectByExampleQueryId="false"></table>
+		<!--<table tableName="tab_role_menu" domainObjectName="RoleMenuModel"-->
+			   <!--enableCountByExample="false" enableUpdateByExample="false"-->
+			   <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+			   <!--selectByExampleQueryId="false"></table>-->
 
 		<table tableName="tab_menu" domainObjectName="MenuModel"
 			   enableCountByExample="false" enableUpdateByExample="false"

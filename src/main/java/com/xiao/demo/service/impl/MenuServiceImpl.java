@@ -3,14 +3,17 @@ package com.xiao.demo.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.dao.MenuModelMapper;
 import com.xiao.demo.model.MenuModel;
-import com.xiao.demo.model.PageModel;
 import com.xiao.demo.service.MenuService;
+import com.xiao.demo.vo.PageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +48,40 @@ public class MenuServiceImpl implements MenuService{
         return json;
     }
 
+    @Override
+    public JSONObject getMenuChildren(Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        List<MenuModel> result =menuDao.getMenuChildren();
+        List<MenuModel> sortMenu = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(result)){
+            for(MenuModel param1:result){
+                //MenuParent 为0，表示最顶级的菜单
+                if(0 == param1.getMenuParent()){
+                    param1.setChildren(sortMenuRecursion(param1,result));
+                    sortMenu.add(param1);
+                }
+            }
+        }
+        json.put("menuList",sortMenu);
+        return json;
+    }
+
+    /**
+     * 递归算法，获取菜单对应的子菜单
+     * @param param1
+     * @param result
+     * @return
+     */
+    public List<MenuModel> sortMenuRecursion(MenuModel param1,List<MenuModel> result ){
+        List<MenuModel> jsonSort = new ArrayList<>();
+        for(MenuModel param2:result){
+            if(param1.getId() == param2.getMenuParent()){
+                param2.setChildren(sortMenuRecursion(param2,result));
+                jsonSort.add(param2);
+            }
+        }
+        return jsonSort;
+    }
     @Override
     public int deleteByPrimaryKey(Integer id) {
         return 0;

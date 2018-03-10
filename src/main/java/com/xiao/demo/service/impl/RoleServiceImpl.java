@@ -2,7 +2,7 @@ package com.xiao.demo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.dao.RoleModelMapper;
-import com.xiao.demo.model.PageModel;
+import com.xiao.demo.vo.PageModel;
 import com.xiao.demo.model.RoleModel;
 import com.xiao.demo.service.RoleService;
 import org.slf4j.Logger;

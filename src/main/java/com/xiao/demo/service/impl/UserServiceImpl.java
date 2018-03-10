@@ -2,7 +2,7 @@ package com.xiao.demo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.dao.UserModelMapper;
-import com.xiao.demo.model.PageModel;
+import com.xiao.demo.vo.PageModel;
 import com.xiao.demo.model.UserModel;
 import com.xiao.demo.service.UserService;
 import org.slf4j.Logger;

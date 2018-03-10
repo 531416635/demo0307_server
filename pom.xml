@@ -93,18 +93,19 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.46</version>
 		</dependency>
+
+		<!-- 集成外部jar的示例 -->
+		<!--<dependency>-->
+			<!--<groupId>my-jar1</groupId>   &lt;!&ndash; 自己随便取 &ndash;&gt;-->
+			<!--<artifactId>my-jar1</artifactId> &lt;!&ndash; 自己随便取 &ndash;&gt;-->
+			<!--<version>1.0</version>&lt;!&ndash; 自己随便取 &ndash;&gt;-->
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${project.basedir}/lib/json-lib-2.4-jdk15.jar</systemPath>-->
+		<!--</dependency>-->
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!--<plugin>-->
-				<!--<groupId>org.springframework.boot</groupId>-->
-				<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-				<!--<configuration>-->
-					<!--<fork>true</fork>-->
-				<!--</configuration>-->
-			<!--</plugin>-->
-			<!-- war打包插件, 设定war包名称不带版本号 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -113,12 +114,11 @@
 					<warName>${project.artifactId}</warName>
 					<webResources>
 						<resource>
-							<directory>src/main/java</directory>
+							<directory>${project.basedir}/lib</directory>
+							<targetPath>WEB-INF/lib/</targetPath>
 							<includes>
-								<include>*.*</include>
-								<include>**/*.*</include>
+								<include>**/*.jar</include>
 							</includes>
-							<filtering>true</filtering>
 						</resource>
 					</webResources>
 				</configuration>

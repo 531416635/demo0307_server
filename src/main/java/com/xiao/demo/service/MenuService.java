@@ -11,6 +11,12 @@ public interface MenuService {
      * @return
      */
     JSONObject selectAllMenus(Map<String,Object> map);
+
+    /**
+     * 获取全部菜单信息
+     * @return
+     */
+    JSONObject getMenuChildren(Map<String,Object> map);
     /**
      *
      * @mbg.generated 2018-03-07
