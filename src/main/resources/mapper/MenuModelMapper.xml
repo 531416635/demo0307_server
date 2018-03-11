@@ -25,19 +25,19 @@
     <include refid="Base_Column_List" />
     from tab_menu
   </select>
-    <select id="selectMenuCount" resultType="java.lang.Integer">
-        select
-        count(1)
-        from tab_menu
-    </select>
-    <select id="selectMenuByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from tab_menu
-        <if  test="page.startPage != null and page.endPage != null" >
-            limit ${page.startPage},${page.endPage}
-        </if>
-    </select>
+  <select id="selectMenuCount" resultType="java.lang.Integer">
+      select
+      count(1)
+      from tab_menu
+  </select>
+  <select id="selectMenuByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from tab_menu
+      <if  test="page.startPage != null and page.endPage != null" >
+          limit ${page.startPage},${page.endPage}
+      </if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_menu
     where id = #{id,jdbcType=INTEGER}

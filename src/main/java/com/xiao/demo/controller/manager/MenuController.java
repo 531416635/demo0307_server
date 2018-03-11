@@ -2,6 +2,7 @@ package com.xiao.demo.controller.manager;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.config.Constant;
+import com.xiao.demo.model.MenuModel;
 import com.xiao.demo.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,4 +69,41 @@ public class MenuController {
     }
 
 
+    /**
+     * 插入菜单
+     * @return
+     */
+    @RequestMapping(value = "/addMenu.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject addMenu(@RequestBody(required = false)MenuModel menuModel){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",menuService.insertSelective(menuModel));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","插入菜单异常");
+        }
+        return json;
+    }
+
+    /**
+     * 更新菜单
+     * @return
+     */
+    @RequestMapping(value = "/editMenu.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject editMenu(@RequestBody(required = false)MenuModel menuModel){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",menuService.updateByPrimaryKeySelective(menuModel));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","更新菜单异常");
+        }
+        return json;
+    }
 }

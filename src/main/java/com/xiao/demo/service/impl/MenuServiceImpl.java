@@ -59,7 +59,7 @@ public class MenuServiceImpl implements MenuService{
                 if(0 == param1.getMenuParent()){
                     //处理级联默认显示选项
                     List<Integer> def = new ArrayList<>();
-                    def.add(param1.getId());
+                    def.add(0);
                     param1.setDefaultSelect(def);
                     //处理子节点
                     List<MenuModel> children = sortMenuRecursion(param1,result);
@@ -89,7 +89,7 @@ public class MenuServiceImpl implements MenuService{
                 //处理级联默认显示选项
                 List<Integer> def = new ArrayList<>();
                 def.addAll(param1.getDefaultSelect());
-                def.add(param2.getId());
+                def.add(param1.getId());
                 param2.setDefaultSelect(def);
 
                 //处理子节点
@@ -116,7 +116,9 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public int insertSelective(MenuModel record) {
-        return 0;
+        List<Integer> parents = record.getDefaultSelect();
+        record.setMenuParent(parents.get(parents.size()-1));
+        return menuDao.insertSelective(record);
     }
 
     @Override
@@ -126,7 +128,10 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public int updateByPrimaryKeySelective(MenuModel record) {
-        return 0;
+        logger.info(JSONObject.toJSONString(record));
+        List<Integer> parents = record.getDefaultSelect();
+        record.setMenuParent(parents.get(parents.size()-1));
+        return menuDao.updateByPrimaryKeySelective(record);
     }
 
     @Override
