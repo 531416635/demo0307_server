@@ -125,4 +125,42 @@ public class RoleController {
         return json;
     }
 
+    /**
+     * 查询权限（获取角色对应权限的菜单ID）
+     * @return
+     */
+    @RequestMapping(value = "/getRoleAuth.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject getRoleAuth(@RequestBody(required = false)RoleModel model){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",roleService.getRoleAuth(model));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","查询权限异常");
+        }
+        return json;
+    }
+
+    /**
+     * 执行赋权操作（将角色对应权限的菜单ID保存起来）
+     * @return
+     */
+    @RequestMapping(value = "/addRoleAuth.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject addRoleAuth(@RequestBody(required = false)Map<String,Object> map){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            logger.info(JSONObject.toJSONString(map));
+            json.put("result",roleService.addRoleAuth(map));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","执行赋权操作异常");
+        }
+        return json;
+    }
 }

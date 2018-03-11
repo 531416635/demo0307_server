@@ -18,6 +18,18 @@ public interface RoleService {
      * @return
      */
     JSONObject selectAllRole();
+
+    /**
+     * 查询权限（获取角色对应权限的菜单ID）
+     * @return
+     */
+    JSONObject getRoleAuth(RoleModel record);
+
+    /**
+     * 保存权限（保存角色对应权限的菜单ID）
+     * @return
+     */
+    JSONObject addRoleAuth(Map<String,Object> map);
     /**
      *
      * @mbg.generated 2018-03-07
