@@ -57,7 +57,12 @@ public class MenuServiceImpl implements MenuService{
             for(MenuModel param1:result){
                 //MenuParent 为0，表示最顶级的菜单
                 if(0 == param1.getMenuParent()){
-                    param1.setChildren(sortMenuRecursion(param1,result));
+                    List<MenuModel> children = sortMenuRecursion(param1,result);
+                    if(!CollectionUtils.isEmpty(children)){
+                        param1.setChildren(children);
+                    }else{
+                        param1.setChildren(null);
+                    }
                     sortMenu.add(param1);
                 }
             }
@@ -76,7 +81,12 @@ public class MenuServiceImpl implements MenuService{
         List<MenuModel> jsonSort = new ArrayList<>();
         for(MenuModel param2:result){
             if(param1.getId() == param2.getMenuParent()){
-                param2.setChildren(sortMenuRecursion(param2,result));
+                List<MenuModel> children = sortMenuRecursion(param2,result);
+                if(!CollectionUtils.isEmpty(children)){
+                    param2.setChildren(children);
+                }else{
+                    param2.setChildren(null);
+                }
                 jsonSort.add(param2);
             }
         }
