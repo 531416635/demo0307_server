@@ -2,6 +2,7 @@ package com.xiao.demo.controller.manager;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.config.Constant;
+import com.xiao.demo.model.RoleModel;
 import com.xiao.demo.service.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +44,13 @@ public class RoleController {
         }catch (Exception e){
             e.printStackTrace();
             json.put("code","-2");
-            json.put("msg","获取角色信息异常");
+            json.put("msg","获取分页角色信息异常");
         }
         return json;
     }
 
     /**
-     * 获取全部角色列表
+     * 获取全部角色列表（用户的角色选择）
      * @return
      */
     @RequestMapping(value = "/getAllRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +63,64 @@ public class RoleController {
         }catch (Exception e){
             e.printStackTrace();
             json.put("code","-2");
-            json.put("msg","获取角色信息异常");
+            json.put("msg","获取全部角色信息异常");
+        }
+        return json;
+    }
+
+    /**
+     * 新增角色
+     * @return
+     */
+    @RequestMapping(value = "/addRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject addRole(@RequestBody(required = false)RoleModel model){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",roleService.insertSelective(model));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","新增角色异常");
+        }
+        return json;
+    }
+
+    /**
+     * 修改角色
+     * @return
+     */
+    @RequestMapping(value = "/editRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject editRole(@RequestBody(required = false)RoleModel model){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",roleService.updateByPrimaryKeySelective(model));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","修改角色信息异常");
+        }
+        return json;
+    }
+
+    /**
+     * 删除角色
+     * @return
+     */
+    @RequestMapping(value = "/deleteRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject deleteRole(@RequestBody(required = false)RoleModel model){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",roleService.deleteByPrimaryKey(model.getId()));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","删除角色异常");
         }
         return json;
     }
