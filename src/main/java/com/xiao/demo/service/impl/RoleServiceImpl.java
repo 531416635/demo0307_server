@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService{
     RoleModelMapper roleDao;
 
     @Override
-    public JSONObject selectAllRole(Map<String,Object> map) {
+    public JSONObject selectAllRoleByPage(Map<String,Object> map) {
         //分页数据处理
         String currentPage = null;
         String pageSize = null;
@@ -42,6 +42,13 @@ public class RoleServiceImpl implements RoleService{
         JSONObject json = new JSONObject();
         json.put("page",page);
         json.put("roleList",roleDao.selectRoleByPage(mapParam));
+        return json;
+    }
+
+    @Override
+    public JSONObject selectAllRole() {
+        JSONObject json = new JSONObject();
+        json.put("roleList",roleDao.selectAllRole());
         return json;
     }
 

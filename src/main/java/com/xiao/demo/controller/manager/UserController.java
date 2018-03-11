@@ -72,4 +72,47 @@ public class UserController {
         return json;
     }
 
+    /**
+     * 修改用户
+     * @return
+     */
+    @RequestMapping(value = "/editUser.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject editUser(@RequestBody(required = false)Map<String,Object> map){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            UserModel userModel = new UserModel();
+            userModel.setId(Integer.valueOf(map.get("id")+""));
+            userModel.setUserPassword(AESUtils.encrypt(map.get("user_password")+""));
+            userModel.setRoleId(Integer.valueOf(map.get("r_id")+""));
+            json.put("code","1");
+            json.put("result",userService.updateByPrimaryKeySelective(userModel));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","修改用户信息");
+        }
+        return json;
+    }
+
+    /**
+     * 删除用户
+     * @return
+     */
+    @RequestMapping(value = "/deleteUser.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject deleteUser(@RequestBody(required = false)Map<String,Object> map){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            int  key = Integer.valueOf(map.get("id")+"");
+            json.put("code","1");
+            json.put("result",userService.deleteByPrimaryKey(key));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","修改用户信息");
+        }
+        return json;
+    }
+
 }

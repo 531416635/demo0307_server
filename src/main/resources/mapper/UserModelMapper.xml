@@ -18,12 +18,14 @@
   <select id="selectUserCount" resultType="java.lang.Integer">
     select
     count(1)
-    from tab_user
+    from tab_user u
+    LEFT JOIN tab_user_role ur on u.id = ur.u_id
+    LEFT JOIN tab_role r on ur.r_id = r.id
   </select>
-  <select id="selectUserByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from tab_user
+  <select id="selectUserByPage" parameterType="java.util.Map" resultType="java.util.Map">
+    select  *  from tab_user u
+    LEFT JOIN tab_user_role ur on u.id = ur.u_id
+    LEFT JOIN tab_role r on ur.r_id = r.id
     <if  test="page.startPage != null and page.endPage != null" >
       limit ${page.startPage},${page.endPage}
     </if>
@@ -38,7 +40,7 @@
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xiao.demo.model.UserModel">
+  <insert id="insertSelective" parameterType="com.xiao.demo.model.UserModel"  useGeneratedKeys="true" keyProperty="id">
     insert into tab_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

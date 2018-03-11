@@ -30,16 +30,35 @@ public class RoleController {
     private RoleService roleService;
 
     /**
-     * 获取角色列表
+     * 获取角色列表(分页)
      * @return
      */
-    @RequestMapping(value = "/getAllRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
-    public JSONObject getAllRole(@RequestBody(required = false) Map<String,Object> map){
+    @RequestMapping(value = "/selectAllRoleByPage.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject selectAllRoleByPage(@RequestBody(required = false) Map<String,Object> map){
         JSONObject json = new JSONObject();
         json.put("code","-1");
         try{
             json.put("code","1");
-            json.put("result",roleService.selectAllRole(map));
+            json.put("result",roleService.selectAllRoleByPage(map));
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("code","-2");
+            json.put("msg","获取角色信息异常");
+        }
+        return json;
+    }
+
+    /**
+     * 获取全部角色列表
+     * @return
+     */
+    @RequestMapping(value = "/getAllRole.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject getAllRole(){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try{
+            json.put("code","1");
+            json.put("result",roleService.selectAllRole());
         }catch (Exception e){
             e.printStackTrace();
             json.put("code","-2");

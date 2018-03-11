@@ -17,6 +17,11 @@ public class UserModel {
     private String userPassword;
 
     /**
+     * role
+     */
+    private Integer roleId;
+
+    /**
      * 
      * @return id 
      */
@@ -62,5 +67,13 @@ public class UserModel {
      */
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword == null ? null : userPassword.trim();
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

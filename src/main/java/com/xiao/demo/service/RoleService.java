@@ -11,7 +11,13 @@ public interface RoleService {
      * 获取全部角色信息
      * @return
      */
-    JSONObject selectAllRole(Map<String,Object> map);
+    JSONObject selectAllRoleByPage(Map<String,Object> map);
+
+    /**
+     * 获取全部角色信息
+     * @return
+     */
+    JSONObject selectAllRole();
     /**
      *
      * @mbg.generated 2018-03-07

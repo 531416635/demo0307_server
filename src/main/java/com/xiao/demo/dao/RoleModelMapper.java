@@ -21,6 +21,13 @@ public interface RoleModelMapper {
      * @return
      */
     Integer selectRoleCount();
+
+    /**
+     * 获取全部角色信息
+     * @return
+     */
+    List<UserModel> selectAllRole();
+
     /**
      *
      * @mbg.generated 2018-03-07

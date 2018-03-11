@@ -28,6 +28,11 @@
       limit ${page.startPage},${page.endPage}
     </if>
   </select>
+  <select id="selectAllRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tab_role
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tab_role
     where id = #{id,jdbcType=INTEGER}

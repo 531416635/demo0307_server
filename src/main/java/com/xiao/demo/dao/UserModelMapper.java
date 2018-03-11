@@ -13,7 +13,7 @@ public interface UserModelMapper {
      * 获取全部用户信息
      * @return
      */
-    List<UserModel> selectUserByPage(Map<String,Object> map);
+    List<Map<String,Object>> selectUserByPage(Map<String,Object> map);
 
     /**
      * 获取用户数
