@@ -41,6 +41,17 @@ public class MenuModel {
     //tree 子树为节点
     private List<MenuModel> children;
 
+    //用于级联选择器 默认值选项显示
+    private  List<Integer> defaultSelect;
+
+    public List<Integer> getDefaultSelect() {
+        return defaultSelect;
+    }
+
+    public void setDefaultSelect(List<Integer> defaultSelect) {
+        this.defaultSelect = defaultSelect;
+    }
+
     public List<MenuModel> getChildren() {
         return children;
     }
