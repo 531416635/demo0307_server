@@ -85,6 +85,7 @@ public class UserController {
             userModel.setId(Integer.valueOf(map.get("id")+""));
             userModel.setUserPassword(AESUtils.encrypt(map.get("user_password")+""));
             userModel.setRoleId(Integer.valueOf(map.get("r_id")+""));
+            userModel.setUserName(map.get("user_name")+"");
             json.put("code","1");
             json.put("result",userService.updateByPrimaryKeySelective(userModel));
         }catch (Exception e){
