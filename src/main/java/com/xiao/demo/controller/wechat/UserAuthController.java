@@ -27,8 +27,7 @@ public class UserAuthController {
      * 微信网页授权，获取access_token并拉取用户信息
      */
     @RequestMapping(value = "/getAuth.do")
-    @ResponseBody
-    public JSONObject getAuth(@RequestParam(required = false) Map<String,String> map){
+    public String getAuth(@RequestParam(required = false) Map<String,String> map){
         JSONObject json = new JSONObject();
         json.put("code","-1");
         try {
@@ -37,9 +36,7 @@ public class UserAuthController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        logger.info("微信网页授权，获取access_token并拉取用户信息{}");
-        logger.info("{}",JSONObject.toJSONString(map));
-        return json;
+        return "redirect:http://localhost:8080";
     }
 
 }
