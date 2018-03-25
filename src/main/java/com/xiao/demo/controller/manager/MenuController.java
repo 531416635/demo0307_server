@@ -1,7 +1,6 @@
 package com.xiao.demo.controller.manager;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xiao.demo.config.Constant;
 import com.xiao.demo.model.MenuModel;
 import com.xiao.demo.service.MenuService;
 import org.slf4j.Logger;
@@ -23,9 +22,6 @@ import java.util.Map;
 @RequestMapping(value = "/menu")
 public class MenuController {
     private  static Logger logger = LoggerFactory.getLogger(MenuController.class);
-
-    @Autowired
-    private Constant constant;
 
     @Autowired
     private MenuService menuService;

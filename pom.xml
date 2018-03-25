@@ -94,6 +94,17 @@
 			<version>1.2.46</version>
 		</dependency>
 
+        <!-- 解析微信XML消息时需要-->
+		<dependency>
+			<groupId>org.dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+        <dependency>
+            <groupId>xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.2</version>
+        </dependency>
 		<!-- 集成外部jar的示例 -->
 		<!--<dependency>-->
 			<!--<groupId>my-jar1</groupId>   &lt;!&ndash; 自己随便取 &ndash;&gt;-->

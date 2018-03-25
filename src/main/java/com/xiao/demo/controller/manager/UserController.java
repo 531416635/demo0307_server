@@ -1,7 +1,6 @@
 package com.xiao.demo.controller.manager;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xiao.demo.config.Constant;
 import com.xiao.demo.model.UserModel;
 import com.xiao.demo.service.UserService;
 import com.xiao.demo.utils.AESUtils;
@@ -25,9 +24,6 @@ import java.util.Map;
 public class UserController {
 
     private  static Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    private Constant constant;
 
     @Autowired
     private UserService userService;
