@@ -24,6 +24,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 描述：
+ * 作者：yaoyuxiao
+ * 时间：2018/3/25 16:54
+ */
 @Controller
 @RequestMapping(value = "/wechat")
 public class WeChatController {
@@ -96,8 +101,8 @@ public class WeChatController {
 				text.setContent("你发送的消息是：" + content);
 				message = MessageUtil.textMessageToXML(text);
 				System.out.println(message);
+				out.print(message); // 将回应发送给微信服务器
 			}
-			out.print(message); // 将回应发送给微信服务器
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		} finally {
