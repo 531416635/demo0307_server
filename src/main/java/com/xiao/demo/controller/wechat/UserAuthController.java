@@ -1,10 +1,12 @@
 package com.xiao.demo.controller.wechat;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xiao.demo.config.ConfUtil;
 import com.xiao.demo.service.WeiUserAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,27 @@ public class UserAuthController {
 
     @Autowired
     WeiUserAuthService userAuthService;
+
     /**
-     * 微信网页授权，获取access_token并拉取用户信息
+     * 获取用户信息
+     */
+    @RequestMapping(value = "/getUserInfo.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public JSONObject getUserInfo(){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try {
+            json = userAuthService.getUserInfo();
+            json.put("code","1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+
+    /**
+     * 微信网页授权回调地址，获取access_token并拉取用户信息
      */
     @RequestMapping(value = "/getAuth.do")
     public String getAuth(@RequestParam(required = false) Map<String,String> map){
@@ -36,7 +57,7 @@ public class UserAuthController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:http://localhost:8080";
+        return "redirect:"+ ConfUtil.getDemouiIndex();
     }
 
 }

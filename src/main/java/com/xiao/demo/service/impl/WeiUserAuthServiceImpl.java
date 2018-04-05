@@ -11,10 +11,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,8 +39,30 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
     WxUserModelMapper wxUserDao;
 
     @Override
+    public JSONObject getUserInfo() {
+        JSONObject json = new JSONObject();
+        HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
+        HttpSession session = request.getSession();
+        String openId = session.getAttribute("openId")+"";
+        logger.info("openId-------{}",openId);
+        if(!StringUtils.isEmpty(openId)){
+            WxUserModel model = new WxUserModel();
+            model.setOpenid(openId);
+            List<WxUserModel> userList = wxUserDao.getUserBySelect(model);
+            if(!CollectionUtils.isEmpty(userList) && userList.size() > 0){
+                json.put("msgCode","1");
+                json.put("result",userList.get(0));
+            }
+        }
+        return json;
+    }
+
+    @Override
     public JSONObject getAuth(Map<String,String> map) {
         JSONObject json = new JSONObject();
+        HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
+        HttpSession session = request.getSession();
+
 
         //code作为换取access_token的票据
         String code = map.get("code");
@@ -60,6 +89,7 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
             userModel.setOpenid(json.getString("openid"));
             userModel.setScope(json.getString("scope"));
             userModel.setCreateTime(new Date());
+            session.setAttribute("openId",json.getString("openid"));
 
             /**
              * 拉取用户信息(需scope为 snsapi_userinfo)

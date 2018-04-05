@@ -12,6 +12,12 @@ import java.util.Map;
 public interface WeiUserAuthService {
 
     /**
+     * 获取用户信息
+     */
+    JSONObject getUserInfo();
+
+
+    /**
      * 微信网页授权，获取access_token,并拉取用户信息
      */
     JSONObject getAuth(Map<String,String> map);

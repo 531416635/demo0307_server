@@ -18,6 +18,15 @@
     <result column="privilege" jdbcType="VARCHAR" property="privilege" />
     <result column="unionid" jdbcType="VARCHAR" property="unionid" />
   </resultMap>
+
+  <sql id="Base_Column_List">
+      openid, scope, expires_in,
+      refresh_token, access_token, create_time,
+      update_time, nickname, sex,
+      province, city, country,
+      headimgurl, privilege, unionid
+  </sql>
+
   <insert id="insert" parameterType="com.xiao.demo.model.WxUserModel">
     insert into tab_wx_user (openid, scope, expires_in, 
       refresh_token, access_token, create_time, 
@@ -129,4 +138,57 @@
       </if>
     </trim>
   </insert>
+
+  <select id="getUserBySelect" parameterType="com.xiao.demo.model.WxUserModel" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    from tab_wx_user
+    <where>
+      <if test="openid != null">
+        and openid = #{openid,jdbcType=VARCHAR}
+      </if>
+      <if test="scope != null">
+        and scope = #{scope,jdbcType=VARCHAR}
+      </if>
+      <if test="expiresIn != null">
+        and expiresIn = #{expiresIn,jdbcType=VARCHAR}
+      </if>
+      <if test="refreshToken != null">
+        and refreshToken = #{refreshToken,jdbcType=VARCHAR}
+      </if>
+      <if test="accessToken != null">
+        and accessToken = #{accessToken,jdbcType=VARCHAR}
+      </if>
+      <if test="createTime != null">
+        and createTime = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and updateTime = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="nickname != null">
+        and nickname = #{nickname,jdbcType=VARCHAR}
+      </if>
+      <if test="sex != null">
+        and sex = #{sex,jdbcType=VARCHAR}
+      </if>
+      <if test="province != null">
+        and province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null">
+        and province = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="country != null">
+        and country = #{country,jdbcType=VARCHAR}
+      </if>
+      <if test="headimgurl != null">
+        and headimgurl = #{headimgurl,jdbcType=VARCHAR}
+      </if>
+      <if test="privilege != null">
+        and privilege = #{privilege,jdbcType=VARCHAR}
+      </if>
+      <if test="unionid != null">
+        and unionid =#{unionid,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
 </mapper>
