@@ -2,11 +2,11 @@ package com.xiao.demo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.config.ConfUtil;
-import com.xiao.demo.controller.wechat.UserAuthController;
 import com.xiao.demo.dao.WxUserModelMapper;
 import com.xiao.demo.model.WxUserModel;
 import com.xiao.demo.service.WeiUserAuthService;
 import com.xiao.demo.utils.HTTPUtils;
+import com.xiao.demo.utils.JedisManager;
 import com.xiao.demo.utils.SignUtil;
 import com.xiao.demo.utils.WxUtils;
 import org.slf4j.Logger;
@@ -40,6 +40,9 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
     @Autowired
     WxUserModelMapper wxUserDao;
 
+    @Autowired
+    JedisManager jedisManager;
+
     @Override
     public JSONObject getUserInfo() {
         JSONObject json = new JSONObject();
@@ -47,7 +50,7 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
         HttpSession session = request.getSession();
         String openId = session.getAttribute("openId")+"";
         logger.info("openId-------{}",openId);
-        if(!StringUtils.isEmpty(openId)){
+        if(!StringUtils.isEmpty(openId) && "null".equals(openId)){
             WxUserModel model = new WxUserModel();
             model.setOpenid(openId);
             List<WxUserModel> userList = wxUserDao.getUserBySelect(model);
@@ -71,28 +74,34 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
         //重定向后会带上state参数，开发者可以填写a-zA-Z0-9的参数值，最多128字节
         String state = map.get("state");
 
-        /**
-         * 通过code换取网页授权access_token
-         */
-        String url_param = "https://api.weixin.qq.com/sns/oauth2/access_token";
-        Map<String,String> param = new HashMap<>();
-        param.put("appid", ConfUtil.getAppID());//第三方用户唯一凭证
-        param.put("secret",ConfUtil.getAppSecret());//第三方用户唯一凭证密钥，即appsecret
-        param.put("code",code);//
-        param.put("grant_type","authorization_code");//
-
         try {
-            //授权获取access_token
-            json = JSONObject.parseObject(HTTPUtils.sendGet(url_param,param));
+            String access_token = session.getAttribute("access_token")+"";
+            String openId = session.getAttribute("openId")+"";
             WxUserModel userModel = new WxUserModel();
-            userModel.setAccessToken(json.getString("access_token"));
-            userModel.setExpiresIn(json.getString("expires_in"));
-            userModel.setRefreshToken(json.getString("refresh_token"));
-            userModel.setOpenid(json.getString("openid"));
-            userModel.setScope(json.getString("scope"));
-            userModel.setCreateTime(new Date());
-            session.setAttribute("openId",json.getString("openid"));
-            session.setAttribute("accessToken",json.getString("access_token"));
+            if(StringUtils.isEmpty(access_token) || "null".equals(access_token)
+                    || StringUtils.isEmpty(openId) || "null".equals(openId)){
+
+                /**
+                 * 通过code换取网页授权access_token
+                 */
+                String url_param = "https://api.weixin.qq.com/sns/oauth2/access_token";
+                Map<String,String> param = new HashMap<>();
+                param.put("appid", ConfUtil.getAppID());//第三方用户唯一凭证
+                param.put("secret",ConfUtil.getAppSecret());//第三方用户唯一凭证密钥，即appsecret
+                param.put("code",code);//
+                param.put("grant_type","authorization_code");//
+
+                //授权获取access_token
+                json = JSONObject.parseObject(HTTPUtils.sendGet(url_param,param));
+                userModel.setAccessToken(json.getString("access_token"));
+                userModel.setExpiresIn(json.getString("expires_in"));
+                userModel.setRefreshToken(json.getString("refresh_token"));
+                userModel.setOpenid(json.getString("openid"));
+                userModel.setScope(json.getString("scope"));
+                userModel.setCreateTime(new Date());
+                session.setAttribute("openId",json.getString("openid"));
+                session.setAttribute("access_token",json.getString("access_token"));
+            }
 
             /**
              * 拉取用户信息(需scope为 snsapi_userinfo)
@@ -127,13 +136,36 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
     public JSONObject getJsSdkConfig(Map<String, String> map) {
         HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
         HttpSession session = request.getSession();
-        String accessToken = session.getAttribute("accessToken")+"";
+        String openId = session.getAttribute("openId")+"";
+        //获取次数有限 注意缓存全局accessToken
+        String accessToken = jedisManager.getValueByKey(openId+"accessToken");
+        logger.info("---accessToken:{}-=====--{}",accessToken,JSONObject.toJSONString(map));
+        //获取次数有限，jsapi_ticket是公众号用于调用微信JS接口的临时票据；注意缓存
+        String jsapi_ticket = jedisManager.getValueByKey(openId+"ticket");
 
-        logger.info("-----------{}",JSONObject.toJSONString(map));
-        JSONObject jt= WxUtils.getJsapiTicket(accessToken);
-        String ticket=jt.get("ticket")+"";
+        if(StringUtils.isEmpty(accessToken) || "null".equals(accessToken)){
+            JSONObject result_param =WxUtils.getAccessToken();
+            accessToken = result_param.getString("access_token");
+            logger.info("---result_param:{}-=====-",JSONObject.toJSONString(result_param));
+
+            jedisManager.saveValueByKey(openId+"accessToken",accessToken,result_param.getInteger("expires_in"));
+
+            JSONObject jt= WxUtils.getJsapiTicket(accessToken);
+            jsapi_ticket=jt.get("ticket")+"";
+            jedisManager.saveValueByKey(openId+"ticket",jsapi_ticket,jt.getInteger("expiresIn"));
+
+        }
+
+        if(StringUtils.isEmpty(jsapi_ticket) || "null".equals(jsapi_ticket)){
+
+            JSONObject jt= WxUtils.getJsapiTicket(accessToken);
+            jsapi_ticket=jt.get("ticket")+"";
+            jedisManager.saveValueByKey(openId+"ticket",jt.getString("ticket")
+                    ,jt.getInteger("expiresIn"));
+        }
+
         String url=map.get("url");
-        JSONObject reslut = SignUtil.sign(ticket, url);
+        JSONObject reslut = SignUtil.sign(jsapi_ticket, url);
 
         return reslut;
     }
