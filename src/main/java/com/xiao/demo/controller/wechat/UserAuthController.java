@@ -60,4 +60,22 @@ public class UserAuthController {
         return "redirect:"+ ConfUtil.getDemouiIndex();
     }
 
+
+    /**
+     * 微信jssdk的初始化参数获取
+     */
+    @RequestMapping(value = "/getJsSdkConfig.do",produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public JSONObject getJsSdkConfig(@RequestBody(required = false) Map<String,String> map){
+        JSONObject json = new JSONObject();
+        json.put("code","-1");
+        try {
+            json = userAuthService.getJsSdkConfig(map);
+            json.put("code","1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
 }

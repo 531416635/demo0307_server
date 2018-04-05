@@ -21,4 +21,11 @@ public interface WeiUserAuthService {
      * 微信网页授权，获取access_token,并拉取用户信息
      */
     JSONObject getAuth(Map<String,String> map);
+
+    /**
+     * 微信jssdk的初始化参数获取
+     * @param map
+     * @return
+     */
+    JSONObject getJsSdkConfig(Map<String, String> map);
 }

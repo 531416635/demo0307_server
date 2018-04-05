@@ -7,6 +7,8 @@ import com.xiao.demo.dao.WxUserModelMapper;
 import com.xiao.demo.model.WxUserModel;
 import com.xiao.demo.service.WeiUserAuthService;
 import com.xiao.demo.utils.HTTPUtils;
+import com.xiao.demo.utils.SignUtil;
+import com.xiao.demo.utils.WxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +92,7 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
             userModel.setScope(json.getString("scope"));
             userModel.setCreateTime(new Date());
             session.setAttribute("openId",json.getString("openid"));
+            session.setAttribute("accessToken",json.getString("access_token"));
 
             /**
              * 拉取用户信息(需scope为 snsapi_userinfo)
@@ -118,5 +121,20 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
 
         logger.info("========={}",JSONObject.toJSONString(json));
         return json;
+    }
+
+    @Override
+    public JSONObject getJsSdkConfig(Map<String, String> map) {
+        HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
+        HttpSession session = request.getSession();
+        String accessToken = session.getAttribute("accessToken")+"";
+
+        logger.info("-----------{}",JSONObject.toJSONString(map));
+        JSONObject jt= WxUtils.getJsapiTicket(accessToken);
+        String ticket=jt.get("ticket")+"";
+        String url=map.get("url");
+        JSONObject reslut = SignUtil.sign(ticket, url);
+
+        return reslut;
     }
 }

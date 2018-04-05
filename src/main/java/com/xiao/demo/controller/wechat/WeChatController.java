@@ -114,31 +114,4 @@ public class WeChatController {
 		}
 	}
 
-	/**
-	 * 获取access_token
-	 */
-	@RequestMapping(value = "/getAccessToken.do", method = RequestMethod.GET)
-	@ResponseBody
-	public JSONObject getAccessToken(){
-		JSONObject json = new JSONObject();
-		String url = "https://api.weixin.qq.com/cgi-bin/token";
-		Map<String,String> map = new HashMap<>();
-		map.put("grant_type","client_credential");//获取access_token填写client_credential
-		map.put("appid", ConfUtil.getAppID());//第三方用户唯一凭证
-		map.put("secret",ConfUtil.getAppSecret());//第三方用户唯一凭证密钥，即appsecret
-
-		try {
-			json = JSONObject.parseObject(HTTPUtils.sendGet(url,map));
-
-			//获取接口返回的access_token，用于全局调用微信接口 有效时间2小时
-			String access_token = json.get("access_token")+"";
-
-//			jedisManager.
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		logger.info("",json);
-		return json;
-	}
-
 }
