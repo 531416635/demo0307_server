@@ -50,7 +50,7 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
         HttpSession session = request.getSession();
         String openId = session.getAttribute("openId")+"";
         logger.info("openId-------{}",openId);
-        if(!StringUtils.isEmpty(openId) && "null".equals(openId)){
+        if(!StringUtils.isEmpty(openId) && !"null".equals(openId)){
             WxUserModel model = new WxUserModel();
             model.setOpenid(openId);
             List<WxUserModel> userList = wxUserDao.getUserBySelect(model);
@@ -101,6 +101,9 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
                 userModel.setCreateTime(new Date());
                 session.setAttribute("openId",json.getString("openid"));
                 session.setAttribute("access_token",json.getString("access_token"));
+
+                openId = json.getString("openid");
+                access_token = json.getString("access_token");
             }
 
             /**
@@ -108,8 +111,8 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
              */
             String url_param1 = "https://api.weixin.qq.com/sns/userinfo";
             Map<String,String> param1 = new HashMap<>();
-            param1.put("access_token", userModel.getAccessToken());//网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
-            param1.put("openid",userModel.getOpenid());//用户的唯一标识
+            param1.put("access_token", access_token);//网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
+            param1.put("openid",openId);//用户的唯一标识
             param1.put("lang","zh_CN");//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
             json = JSONObject.parseObject(HTTPUtils.sendGet(url_param1,param1));
 

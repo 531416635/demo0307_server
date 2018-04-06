@@ -1,5 +1,6 @@
 package com.xiao.demo.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +38,7 @@ public class HTTPUtils {
 	 */
 	public static String sendGet(String url, Map<String, String> map)
 			throws IOException {
-		logger.info("sendGet 请求的地址为{}",url);
+		logger.info("sendGet 请求的地址为{}，请求参数为：{}",url, JSONObject.toJSONString(map));
 		StringBuilder buffer = new StringBuilder(); // 用来拼接参数
 		StringBuilder result = new StringBuilder(); // 用来接受返回值
 		URL httpUrl; // HTTP URL类 用这个类来创建连接

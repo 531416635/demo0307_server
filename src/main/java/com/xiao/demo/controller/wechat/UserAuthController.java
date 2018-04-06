@@ -37,6 +37,7 @@ public class UserAuthController {
         try {
             json = userAuthService.getUserInfo();
             json.put("code","1");
+            logger.info("获取用户信息出参-------{}",JSONObject.toJSONString(json));
         } catch (Exception e) {
             e.printStackTrace();
         }
