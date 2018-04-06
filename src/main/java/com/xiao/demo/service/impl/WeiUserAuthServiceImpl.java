@@ -77,6 +77,8 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
         try {
             String access_token = session.getAttribute("access_token")+"";
             String openId = session.getAttribute("openId")+"";
+            logger.info("session中的openId==={}",openId);
+            logger.info("session中的access_token==={}",access_token);
             WxUserModel userModel = new WxUserModel();
             if(StringUtils.isEmpty(access_token) || "null".equals(access_token)
                     || StringUtils.isEmpty(openId) || "null".equals(openId)){

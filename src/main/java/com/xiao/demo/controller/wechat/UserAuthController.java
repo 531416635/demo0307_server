@@ -58,6 +58,7 @@ public class UserAuthController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        logger.info("获取用户信息出参-------{}",JSONObject.toJSONString(json));
         return "redirect:"+ ConfUtil.getDemouiIndex();
     }
 
