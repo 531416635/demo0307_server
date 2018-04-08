@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.config.ConfUtil;
 import com.xiao.demo.dao.WxUserModelMapper;
 import com.xiao.demo.model.WxUserModel;
-import com.xiao.demo.service.WeiUserAuthService;
+import com.xiao.demo.service.WxUserAuthService;
 import com.xiao.demo.utils.HTTPUtils;
 import com.xiao.demo.utils.JedisManager;
 import com.xiao.demo.utils.SignUtil;
@@ -32,9 +32,9 @@ import java.util.Map;
  * 时间：2018/3/25 16:59
  */
 @Service
-public class WeiUserAuthServiceImpl implements WeiUserAuthService {
+public class WxUserAuthServiceImpl implements WxUserAuthService {
 
-    private static final Logger logger = LoggerFactory.getLogger(WeiUserAuthServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(WxUserAuthServiceImpl.class);
 
 
     @Autowired
@@ -106,29 +106,28 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
 
                 openId = json.getString("openid");
                 access_token = json.getString("access_token");
+
+                /**
+                 * 拉取用户信息(需scope为 snsapi_userinfo)
+                 */
+                String url_param1 = "https://api.weixin.qq.com/sns/userinfo";
+                Map<String,String> param1 = new HashMap<>();
+                param1.put("access_token", access_token);//网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
+                param1.put("openid",openId);//用户的唯一标识
+                param1.put("lang","zh_CN");//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+                json = JSONObject.parseObject(HTTPUtils.sendGet(url_param1,param1));
+
+                userModel.setNickname(json.getString("nickname"));
+                userModel.setSex(json.getString("sex"));
+                userModel.setProvince(json.getString("province"));
+                userModel.setCity(json.getString("city"));
+                userModel.setCountry(json.getString("country"));
+                userModel.setHeadimgurl(json.getString("headimgurl"));
+                userModel.setPrivilege(json.getString("privilege"));
+                userModel.setUnionid(json.getString("unionid"));
+
+                wxUserDao.insertSelective(userModel);
             }
-
-
-            /**
-             * 拉取用户信息(需scope为 snsapi_userinfo)
-             */
-            String url_param1 = "https://api.weixin.qq.com/sns/userinfo";
-            Map<String,String> param1 = new HashMap<>();
-            param1.put("access_token", access_token);//网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
-            param1.put("openid",openId);//用户的唯一标识
-            param1.put("lang","zh_CN");//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
-            json = JSONObject.parseObject(HTTPUtils.sendGet(url_param1,param1));
-
-            userModel.setNickname(json.getString("nickname"));
-            userModel.setSex(json.getString("sex"));
-            userModel.setProvince(json.getString("province"));
-            userModel.setCity(json.getString("city"));
-            userModel.setCountry(json.getString("country"));
-            userModel.setHeadimgurl(json.getString("headimgurl"));
-            userModel.setPrivilege(json.getString("privilege"));
-            userModel.setUnionid(json.getString("unionid"));
-
-            wxUserDao.insertSelective(userModel);
 
         } catch (IOException e) {
             e.printStackTrace();

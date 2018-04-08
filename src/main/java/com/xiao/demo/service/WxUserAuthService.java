@@ -9,7 +9,7 @@ import java.util.Map;
  * 作者：yaoyuxiao
  * 时间：2018/3/25 16:58
  */
-public interface WeiUserAuthService {
+public interface WxUserAuthService {
 
     /**
      * 获取用户信息

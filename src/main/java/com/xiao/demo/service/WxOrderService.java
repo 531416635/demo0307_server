@@ -9,7 +9,7 @@ import java.util.Map;
  * 作者：yaoyuxiao
  * 时间：2018/4/8 20:44
  */
-public interface OrderService {
+public interface WxOrderService {
 
     /**
      * 获取全部菜单信息

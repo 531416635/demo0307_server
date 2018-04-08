@@ -3,7 +3,7 @@ package com.xiao.demo.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.xiao.demo.dao.WxOrderModelMapper;
 import com.xiao.demo.model.WxOrderModel;
-import com.xiao.demo.service.OrderService;
+import com.xiao.demo.service.WxOrderService;
 import com.xiao.demo.utils.SequenceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +23,9 @@ import java.util.Map;
  * 时间：2018/4/8 20:45
  */
 @Service
-public class OrderServiceImpl implements OrderService {
+public class WxOrderServiceImpl implements WxOrderService {
 
-    private static Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(WxOrderServiceImpl.class);
 
     @Autowired
     WxOrderModelMapper orderDao;
@@ -36,8 +36,10 @@ public class OrderServiceImpl implements OrderService {
         HttpServletRequest request = ( (ServletRequestAttributes) RequestContextHolder.getRequestAttributes( ) ).getRequest( );
         HttpSession session = request.getSession();
         String openId = session.getAttribute("openId")+"";
-        JSONObject register = JSONObject.parseObject(map.get("register")+"",JSONObject.class);
-        JSONObject addressGps = JSONObject.parseObject(map.get("addressGps")+"",JSONObject.class);
+        System.out.println(map.get("register")+"");
+        Map register = (Map) map.get("register");
+        System.out.println(map.get("addressGps")+"");
+        Map addressGps = (Map) map.get("addressGps");
 
         String type = register.get("type")+"";
         String orderId = SequenceUtils.getOrderNo(openId,type);

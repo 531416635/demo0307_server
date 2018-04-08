@@ -140,7 +140,7 @@
 
     ON DUPLICATE KEY UPDATE
 
-    <set>
+    <trim suffixOverrides=",">
       <if test="scope != null">
         scope = #{scope,jdbcType=VARCHAR},
       </if>
@@ -183,7 +183,7 @@
       <if test="unionid != null">
         unionid = #{unionid,jdbcType=VARCHAR},
       </if>
-    </set>
+    </trim>
   </insert>
 
   <select id="getUserBySelect" parameterType="com.xiao.demo.model.WxUserModel" resultMap="BaseResultMap">
