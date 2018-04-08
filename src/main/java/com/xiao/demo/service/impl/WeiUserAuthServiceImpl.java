@@ -108,6 +108,7 @@ public class WeiUserAuthServiceImpl implements WeiUserAuthService {
                 access_token = json.getString("access_token");
             }
 
+
             /**
              * 拉取用户信息(需scope为 snsapi_userinfo)
              */
