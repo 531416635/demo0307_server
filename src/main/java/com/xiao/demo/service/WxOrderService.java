@@ -12,8 +12,14 @@ import java.util.Map;
 public interface WxOrderService {
 
     /**
-     * 获取全部菜单信息
+     * 生成订单
      * @return
      */
     JSONObject createOrder(Map<String,Object> map);
+
+    /**
+     * 获取订单信息(支持分页获取)
+     * @return
+     */
+    JSONObject getOrder(Map<String,Object> map);
 }

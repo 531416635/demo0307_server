@@ -59,6 +59,11 @@ public class WxOrderModel {
     private String address;
 
     /**
+     * 订单状态
+     */
+    private String orderStatus;
+
+    /**
      * 
      * @return id 
      */
@@ -232,5 +237,13 @@ public class WxOrderModel {
      */
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
