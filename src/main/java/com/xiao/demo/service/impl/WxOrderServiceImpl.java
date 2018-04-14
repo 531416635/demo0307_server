@@ -108,7 +108,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         Map<String,Object> mapParam = new HashMap<>();
         mapParam.put("page",page);
         mapParam.put("orderStatus",orderStatus);
-        mapPage.put("openid",openId);
+        mapParam.put("openid",openId);
 
         json.put("result",orderDao.selectOrderByPage(mapParam));
 
