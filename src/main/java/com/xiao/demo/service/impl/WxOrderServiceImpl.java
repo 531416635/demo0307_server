@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -88,6 +89,9 @@ public class WxOrderServiceImpl implements WxOrderService {
         HttpSession session = request.getSession();
         String openId = session.getAttribute("openId")+"";
 
+        if(StringUtils.isEmpty(openId) || "null".equals(openId)){
+//            openId = "oI2OOwotXwQD-NACEebh7BwXeHzk";
+        }
         //分页数据处理
         String currentPage = null;
         String pageSize = null;
@@ -111,6 +115,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         mapParam.put("openid",openId);
 
         json.put("result",orderDao.selectOrderByPage(mapParam));
+        json.put("totalCount",totalCount);
 
         return json;
     }
