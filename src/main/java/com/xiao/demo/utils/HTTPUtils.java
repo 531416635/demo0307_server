@@ -77,7 +77,7 @@ public class HTTPUtils {
 	}
 
 	public static String sendPost(String url,  Map<String, String> map) throws IOException {
-		logger.info("sendPost 请求的地址为{}",url);
+		logger.info("sendPost 请求的地址为{},请求参数：{}",url,JSONObject.toJSONString(map));
 		StringBuilder buffer = new StringBuilder(); // 用来拼接参数
 		StringBuilder result = new StringBuilder(); // 用来接受返回值
 		URL httpUrl; // HTTP URL类 用这个类来创建连接
@@ -111,6 +111,55 @@ public class HTTPUtils {
 		}
 		
 		printWriter.print(param);
+		printWriter.flush();
+		connection.connect();
+		// 接受连接返回参数
+		bufferedReader = new BufferedReader(new InputStreamReader(
+				connection.getInputStream()));
+		String line;
+		while ((line = bufferedReader.readLine()) != null) {
+			result.append(line);
+		}
+		bufferedReader.close();
+		logger.info("sendPost 请求返回的结果集为：{}",result.toString());
+		return result.toString();
+	}
+
+	public static String sendPost(String url,  String data) throws IOException {
+		logger.info("sendPost 请求的地址为{},请求参数：{}",url,data);
+//		StringBuilder buffer = new StringBuilder(); // 用来拼接参数
+		StringBuilder result = new StringBuilder(); // 用来接受返回值
+		URL httpUrl; // HTTP URL类 用这个类来创建连接
+		URLConnection connection; // 创建的http连接
+		PrintWriter printWriter;
+		BufferedReader bufferedReader; // 接受连接受的参数
+		// 创建URL
+		httpUrl = new URL(url);
+		// 建立连接
+		connection = httpUrl.openConnection();
+		connection
+				.setRequestProperty("accept",
+						"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+		connection.setRequestProperty("connection", "keep-alive");
+		connection
+				.setRequestProperty("user-agent",
+						"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0");
+		connection.setDoOutput(true);
+		connection.setDoInput(true);
+		printWriter = new PrintWriter(connection.getOutputStream());
+
+//		String param = buffer.toString();
+////		if (map.size() > 0) {
+////			Set<String> keys = map.keySet();
+////			for (String key : keys) {
+////				buffer.append(key)
+////						.append("=")
+////						.append(URLEncoder.encode(map.get(key),"utf-8")).append("&");
+////			}
+////			param = buffer.toString().substring(0,buffer.toString().length()-1);
+////		}
+
+		printWriter.print(data);
 		printWriter.flush();
 		connection.connect();
 		// 接受连接返回参数

@@ -38,6 +38,13 @@ public class ConfUtil {
     }
 
     /**
+     * 模板消息 ID --  提交订单之后的发送订单消息
+     */
+    public static String getTemplateOrderInit() {
+        return properties.getProperty("TemplateOrderInit");
+    }
+
+    /**
      * 微信首页地址
      */
     public static String getDemouiIndex() {

@@ -1,10 +1,15 @@
 package com.xiao.demo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xiao.demo.config.ConfUtil;
 import com.xiao.demo.dao.WxOrderModelMapper;
 import com.xiao.demo.model.WxOrderModel;
+import com.xiao.demo.model.WxTemplate;
+import com.xiao.demo.model.WxTemplateParam;
 import com.xiao.demo.service.WxOrderService;
+import com.xiao.demo.utils.JedisManager;
 import com.xiao.demo.utils.SequenceUtils;
+import com.xiao.demo.utils.WxUtils;
 import com.xiao.demo.vo.PageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 描述：
@@ -33,6 +36,8 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Autowired
     WxOrderModelMapper orderDao;
 
+    @Autowired
+    JedisManager jedisManager;
     /**
      * 生成订单
      * @return
@@ -71,6 +76,24 @@ public class WxOrderServiceImpl implements WxOrderService {
         orderModel.setOrderStatus("0");//待付款
 
         json.put("result",orderDao.insertSelective(orderModel));
+
+        //推送模板消息
+        List<WxTemplateParam> paras=new ArrayList<WxTemplateParam>();
+        paras.add(new WxTemplateParam("orderId",orderId,"#173177"));
+        paras.add(new WxTemplateParam("title",title,"#173177"));
+        paras.add(new WxTemplateParam("question",question,"#173177"));
+        paras.add(new WxTemplateParam("addressValue",addressValue,"#173177"));
+        paras.add(new WxTemplateParam("address",address,"#173177"));
+        paras.add(new WxTemplateParam("phone",phone,"#173177"));
+
+        //获取次数有限 注意缓存全局accessToken
+        String accessToken = jedisManager.getValueByKey(openId+"accessToken");
+        if(StringUtils.isEmpty(accessToken) || "null".equals(accessToken)) {
+            JSONObject result_param = WxUtils.getAccessToken();
+            accessToken = result_param.getString("access_token");
+            jedisManager.saveValueByKey(openId + "accessToken", accessToken, result_param.getInteger("expires_in"));
+        }
+        WxUtils.sendTemplateOrder(openId, ConfUtil.getTemplateOrderInit(),"http://www.baidu.com",paras,accessToken);
         return json;
     }
 
